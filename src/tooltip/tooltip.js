@@ -19,7 +19,7 @@ angular.module( 'ui.bootstrap.tooltip', [] )
 
   // The options specified to the provider globally.
   var globalOptions = {};
-  
+
   /**
    * `options({})` allows global configuration of all tooltips in the
    * application.
@@ -29,9 +29,9 @@ angular.module( 'ui.bootstrap.tooltip', [] )
    *     $tooltipProvider.options( { placement: 'left' } );
    *   });
    */
-	this.options = function( value ) {
-		angular.extend( globalOptions, value );
-	};
+    this.options = function( value ) {
+        angular.extend( globalOptions, value );
+    };
 
   /**
    * This is a helper function for translating camel-case to snake-case.
@@ -53,7 +53,7 @@ angular.module( 'ui.bootstrap.tooltip', [] )
       var options = angular.extend( {}, defaultOptions, globalOptions );
       var directiveName = snake_case( type );
 
-      var template = 
+      var template =
         '<'+ directiveName +'-popup '+
           'title="{{tt_title}}" '+
           'content="{{tt_content}}" '+
@@ -73,7 +73,7 @@ angular.module( 'ui.bootstrap.tooltip', [] )
           left: boundingClientRect.left + $window.pageXOffset
         };
       }
-          
+
       return {
         restrict: 'EA',
         scope: true,
@@ -116,7 +116,7 @@ angular.module( 'ui.bootstrap.tooltip', [] )
               scope.$apply( show );
             }
           }
-          
+
           // Show the tooltip popup element.
           function show() {
             var position,
@@ -134,11 +134,11 @@ angular.module( 'ui.bootstrap.tooltip', [] )
             if ( transitionTimeout ) {
               $timeout.cancel( transitionTimeout );
             }
-            
+
             // Set the initial positioning.
             tooltip.css({ top: 0, left: 0, display: 'block' });
-            
-            // Now we add it to the DOM because need some info about it. But it's not 
+
+            // Now we add it to the DOM because need some info about it. But it's not
             // visible yet anyway.
             if ( options.appendToBody ) {
                 $body = $body || $document.find( 'body' );
@@ -146,14 +146,14 @@ angular.module( 'ui.bootstrap.tooltip', [] )
             } else {
               element.after( tooltip );
             }
-            
+
             // Get the position of the directive element.
             position = getPosition( element );
 
             // Get the height and width of the tooltip so we can center it.
             ttWidth = tooltip.prop( 'offsetWidth' );
             ttHeight = tooltip.prop( 'offsetHeight' );
-            
+
             // Calculate the tooltip's top and left coordinates to center it with
             // this directive.
             switch ( scope.tt_placement ) {
@@ -182,14 +182,14 @@ angular.module( 'ui.bootstrap.tooltip', [] )
                 };
                 break;
             }
-            
+
             // Now set the calculated positioning.
             tooltip.css( ttPosition );
-              
+
             // And show the tooltip.
             scope.tt_isOpen = true;
           }
-          
+
           // Hide the tooltip popup element.
           function hide() {
             // First things first: we don't show it anymore.
@@ -198,8 +198,8 @@ angular.module( 'ui.bootstrap.tooltip', [] )
 
             //if tooltip is going to be shown after delay, we must cancel this
             $timeout.cancel( popupTimeout );
-            
-            // And now we remove it from the DOM. However, if we have animation, we 
+
+            // And now we remove it from the DOM. However, if we have animation, we
             // need to wait for it to expire beforehand.
             // FIXME: this is a placeholder for a port of the transitions library.
             if ( angular.isDefined( scope.tt_animation ) && scope.tt_animation() ) {
@@ -207,6 +207,13 @@ angular.module( 'ui.bootstrap.tooltip', [] )
             } else {
               tooltip.remove();
             }
+          }
+
+          if ( angular.isDefined( attrs[prefix + 'TriggerShow'] )) {
+            defaultTriggerShow = attrs[prefix + 'TriggerShow'];
+          }
+          if ( angular.isDefined( attrs[prefix + 'TriggerHide'] )) {
+            defaultTriggerHide = attrs[prefix + 'TriggerHide'];
           }
 
           // Register the event listeners. If only one event listener was
